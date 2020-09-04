@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask上传图片</title>
+</head>
+<body>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <form action="" enctype='multipart/form-data' method='POST'>
+        <input type="file" name="file"/>
+        <input type="text" class="txt_input" name="name" value="{{userinput}}"/>
+        <input type="submit" value="上传" class="button-new"/>
+    </form>
+    <div style="float: right;">
+        <input id="FindFace" type="button" value="找到图片中所有的人脸"/>
+        <input id="FaceRecognition" type="button" value="识别图片中的人脸是谁"/>
+        <input id="GenderRecognition" type="button" value="识别图片中的人的性别"/>
+    </div>
+    <br/><!-- ./images/test.jpg -->
+    <img id="showImage" src="{{ url_for('static', filename=filePath ,_t=val1) }}" width="{{width}}px" height="{{height}}px" alt=""/>
+    <div id="arrow" style="position: absolute;" hidden><img src="static\images\jiantou.png" >
+        <span style="position: absolute;top:0px;"><h2 id="showImageName" style="position: fixed;margin-top: 0px;" hidden></h2></span>
+    </div>
+    <img id="newShowImage" hidden/>
+    
+
+    <script type="text/javascript">
+        var width = "{{width}}";
+        var height = "{{height}}";
+
+        var setLeft = width;
+        
+        if(height>1000){
+            $("#showImage").attr("width",width/2+"px");
+            $("#showImage").attr("height",height/2+"px");
+        }
+        
+
+        $(document).ready(function(){
+            $("#FindFace").on("click",function(){
+                $.ajax({
+                    url: "/Find_Face",
+                    type: "POST",
+                    data: {"fileName":$("input[name='name']").val()},
+                    dataType: "json",
+                    success: function (data) {
+                        debugger;
+                        if(data.status==200){
+                            $("#newShowImage").removeAttr("hidden");
+                            $("#newShowImage").attr("src","static/save_Images/"+data.filePath);
+                        }
+                        else{
+                            alert(data.msg);
+                        }
+                    }
+                });
+            });
+            
+            $("#FaceRecognition").on("click",function(){
+                $.ajax({
+                    url: "/Face_Recognition",
+                    type: "POST",
+                    data: {"fileName":$("input[name='name']").val()},
+                    dataType: "json",
+                    success: function (data) {
+                        debugger;
+                        if(data.status==200){
+                            $("#showImageName").removeAttr("hidden");
+                            $("#showImageName").html(data.Name);
+                            $("#arrow").removeAttr("hidden");
+                            $("#arrow").css("top",((height/2)-(height/5))+"px");
+                            if(height > 1000){
+                                setLeft =  (width/2) + 20;
+                            }
+                            $("#arrow").css("left",setLeft + "px");
+                        }
+                        else{
+                            alert(data.msg);
+                        }
+                    }
+                });
+            });
+
+            $("#GenderRecognition").on("click",function(){
+                $.ajax({
+                    url: "/Gender_Recognition",
+                    type: "POST",
+                    data: {"fileName":$("input[name='name']").val()},
+                    dataType: "json",
+                    success: function (data) {
+                        debugger;
+                        if(data.status==200){
+                            $("#showImageName").removeAttr("hidden");
+                            $("#showImageName").html(data.gender);
+                            $("#arrow").removeAttr("hidden");
+                            $("#arrow").css("top",((height/2)-(height/5))+"px");
+                            if(height > 1000){
+                                setLeft =  (width/2) + 20;
+                            }
+                            $("#arrow").css("left",setLeft + "px");
+                        }
+                        else{
+                            alert(data.msg);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>index</title>
+</head>
+
+<body>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <div id="container"></div>
+    <!-- <img id ="showImg" style="width: 100%;height: 100%;"/> -->
+    <!-- <input id="FileUpload" type="file" name="file"> -->
+    <!-- <button type="button" onclick="Upload_Image();"></button> -->
+
+
+	<script type="text/javascript">
+        $(document).ready(function(){
+            $.ajax({
+                url: "/test_post",
+                type: "POST",
+                dataType: "json",
+                success: function (data) 
+                {
+                    document.writeln(data.name)
+                    document.writeln(data.age)
+                }
+            });
+        });
+        
+        // function Upload_Image()
+        // {
+        //     var formFile = new FormData();
+        //     formFile.append("file", document.getElementById("FileUpload").files[0]);
+        //     $.ajax({
+        //         url: "/upload_image",
+        //         type: "POST",
+        //         data: formFile,
+        //         dataType: "json",
+        //         cache: false,
+        //         processData: false,
+        //         contentType: false, 
+        //         success: function (data) 
+        //         {
+        //             debugger;
+        //             if(data.status==200)
+        //             {
+        //                 $("#showImg").attr("src","Upload_Images/"+data.savePath);
+        //             }else
+        //             {
+        //                 alert(data.msg)
+        //             }
+        //         }
+        //     });
+        // }
+
+	</script>
+    
+</body>
+ 
+</html>

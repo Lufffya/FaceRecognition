@@ -1,0 +1,60 @@
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Web</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<h1 align="center">welcome!</h1>
+<p align="center">这是一个神奇的网站！</p>
+<body>
+    <div style="width:100px;float:left;margin-left:35px;">
+        <form method="post" enctype="multipart/form-data" id="test_form" style="margin-top:45px;">
+             <a href="javascript:;" class="file button red">选择照片
+             <input type="file" name="photo" id="photo">
+              </a>
+             <button type="button" class="file button red" id="tj" οnclick="ajaxForm()">上传照片</button>
+             <button class="file button red" data-reveal-id="myModal">手动裁剪</button>
+        </form>
+ </div>
+
+
+ <script>
+     debugger;
+     $(document).ready(function(){
+
+     });
+ 
+
+     function ajaxForm(){
+         debugger;
+        var form= new FormData(document.getElementById("test_form"));
+        $.ajax({
+            url:"{{ url_for('api_upload') }}",
+            type:"post",
+            data:form,
+            dataType: 'json',
+            processData:false,
+            contentType:false,
+            success:function(data){
+                    $(img_url_new).attr("src",data.img_url_new);
+                    $(imgPic).attr("src",data.img_url_new);
+            },
+            error:function(e){
+                    alert("error");
+            }
+        })
+    }
+
+
+ 
+ </script>
+</body>
+</html>
